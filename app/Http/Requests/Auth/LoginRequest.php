@@ -46,9 +46,11 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
+      
+ 
             ]);
         }
-
+        // If the user has been successfully authenticated, clear any previous login attempts.
         RateLimiter::clear($this->throttleKey());
     }
 
