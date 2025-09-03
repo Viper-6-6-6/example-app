@@ -4,13 +4,14 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Astro v5.9.2">
-    <title>Dashboard Template · Bootstrap v5.3</title>
+    <title>Laravel Shopify</title>
+    <link rel="icon" type="image/x-icon" href="https://cdn.shopify.com/shopifycloud/web/assets/v1/favicon-default-6cbad9de243dbae3.ico">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
     <script src="{{ asset('assets/js/color-modes.js') }}"></script>
     <link href="{{ asset('assets/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <meta name="theme-color" content="#712cf9">
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     {{-- @yield('custom_css_page') --}}
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeEmail;
+
 
 class CustomersController extends Controller
 {
@@ -95,8 +97,6 @@ class CustomersController extends Controller
             ->with('success', 'Customer deleted successfully.');
     }
 
-
-
     public function sendEmail(Request $request, Customer $customer)
     {
         $request->validate([
@@ -105,11 +105,21 @@ class CustomersController extends Controller
         ]);
 
         // Gửi email
-        Mail::raw($request->message, function ($mail) use ($customer, $request) {
+        $message = $request->message . "\nWelcome,".$customer->name."\nBest regards,\nYour Company Name";
+        Mail::raw($message, function ($mail) use ($customer, $request) {
             $mail->to([$customer->email,'accchuyensanxuatda@gmail.com'])
                 ->subject($request->subject);
         });
 
         return redirect()->route('customers.index')->with('success', 'Email sent to ' . $customer->name);
+    }
+
+        public function sendWelcomeEmail(Customer $customer)
+    {
+        // Đưa job gửi email vào queue
+        Mail::to([$customer->email,'accchuyensanxuatda@gmail.com'])->queue(new WelcomeEmail($customer));
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Welcome email queued for ' . $customer->name);
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Customers List</h2>
+            <h3>Customers List</h3>
             <a href="{{ route('customers.create') }}" class="btn btn-primary">+ Add Customer</a>
         </div>
 
@@ -49,7 +49,7 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <th width="300px">Actions</th>
+                    <th width="450px">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,13 +70,11 @@
                                 <button class="btn btn-sm btn-danger"
                                     onclick="return confirm('Are you sure?')">Delete</button>
                             </form>
-                            
+                            <a href="{{ route('customers.sendWelcomeEmail', $customer) }}" class="btn btn-sm btn-primary">Send Welcome Email</a>
                             <button class="btn btn-sm btn-success" data-bs-toggle="modal"
                                 data-bs-target="#emailModal{{ $customer->id }}">
                                 Send Email
                             </button>
-
-                         
                             <div class="modal fade" id="emailModal{{ $customer->id }}" tabindex="-1"
                                 aria-labelledby="emailModalLabel{{ $customer->id }}" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -108,6 +106,8 @@
                                     </form>
                                 </div>
                             </div>
+
+
                         </td>
                     </tr>
                 @empty

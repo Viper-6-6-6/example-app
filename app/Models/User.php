@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
 // Nếu bạn dùng Sanctum (Breeze hay Jetstream thường dùng):
 use Laravel\Sanctum\HasApiTokens;
 
@@ -38,4 +39,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed', // Laravel 10+ sẽ tự hash khi gán
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }

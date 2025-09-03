@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
@@ -12,7 +11,11 @@ use App\Http\Requests\OrderRequest;
 
 class OrdersController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->authorizeResource(Order::class, 'order');
+    }
+    
     public function index(Request $request)
     {
 
@@ -81,8 +84,6 @@ class OrdersController extends Controller
     // Cập nhật order
     public function update(OrderRequest $request, Order $order)
     {
-
-
         $order->update($request->validated());
 
         return redirect()->route('orders.index')

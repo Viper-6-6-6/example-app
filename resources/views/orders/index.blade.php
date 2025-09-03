@@ -4,10 +4,14 @@
     <div class="container mt-4">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="h3">Orders List</h1>
-            <a href="{{ route('orders.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Create New Order
-            </a>
+            <h3>Orders List</h3>
+            @can('create', App\Models\Order::class)
+                {{-- Nút tạo đơn hàng mới --}}
+                <a href="{{ route('orders.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create New Order
+                </a>
+            @endcan
+
         </div>
 
         {{-- Hiển thị thông báo thành công --}}
@@ -19,54 +23,54 @@
         @endif
 
         <!-- Form lọc -->
-    <form method="GET" action="{{ route('orders.index') }}" class="row g-3 mb-4">
-        <div class="col-md-3">
-            <label class="form-label">Customer</label>
-            <select name="customer_id" class="form-select">
-                <option value="">-- All --</option>
-                @foreach($customers as $customer)
-                    <option value="{{ $customer->id }}" @selected(request('customer_id') == $customer->id)>
-                        {{ $customer->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+        <form method="GET" action="{{ route('orders.index') }}" class="row g-3 mb-4">
+            <div class="col-md-3">
+                <label class="form-label">Customer</label>
+                <select name="customer_id" class="form-select">
+                    <option value="">-- All --</option>
+                    @foreach ($customers as $customer)
+                        <option value="{{ $customer->id }}" @selected(request('customer_id') == $customer->id)>
+                            {{ $customer->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="col-md-3">
-            <label class="form-label">Product</label>
-            <select name="product_id" class="form-select">
-                <option value="">-- All --</option>
-                @foreach($products as $product)
-                    <option value="{{ $product->id }}" @selected(request('product_id') == $product->id)>
-                        {{ $product->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+            <div class="col-md-3">
+                <label class="form-label">Product</label>
+                <select name="product_id" class="form-select">
+                    <option value="">-- All --</option>
+                    @foreach ($products as $product)
+                        <option value="{{ $product->id }}" @selected(request('product_id') == $product->id)>
+                            {{ $product->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="col-md-2">
-            <label class="form-label">Status</label>
-            <select name="status" class="form-select">
-                <option value="">-- All --</option>
-                <option value="processing" @selected(request('status')=='processing')>Processing</option>
-                <option value="received" @selected(request('status')=='received')>Received</option>
-                <option value="delivered" @selected(request('status')=='delivered')>Delivered</option>
-            </select>
-        </div>
+            <div class="col-md-2">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select">
+                    <option value="">-- All --</option>
+                    <option value="processing" @selected(request('status') == 'processing')>Processing</option>
+                    <option value="received" @selected(request('status') == 'received')>Received</option>
+                    <option value="delivered" @selected(request('status') == 'delivered')>Delivered</option>
+                </select>
+            </div>
 
-        <div class="col-md-2">
-            <label class="form-label">Sort by Date</label>
-            <select name="sort_date" class="form-select">
-                <option value="">Default</option>
-                <option value="asc" @selected(request('sort_date')=='asc')>Oldest first</option>
-                <option value="desc" @selected(request('sort_date')=='desc')>Newest first</option>
-            </select>
-        </div>
+            <div class="col-md-2">
+                <label class="form-label">Sort by Date</label>
+                <select name="sort_date" class="form-select">
+                    <option value="">Default</option>
+                    <option value="asc" @selected(request('sort_date') == 'asc')>Oldest first</option>
+                    <option value="desc" @selected(request('sort_date') == 'desc')>Newest first</option>
+                </select>
+            </div>
 
-        <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-pink w-100">Filter</button>
-        </div>
-    </form>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-pink w-100">Filter</button>
+            </div>
+        </form>
 
         {{-- Bảng danh sách đơn hàng --}}
         <div class="card shadow-sm">
@@ -113,18 +117,24 @@
                                     <a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-info">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('orders.edit', $order) }}" class="btn btn-sm btn-warning">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form action="{{ route('orders.destroy', $order) }}" method="POST"
-                                        style="display:inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Delete this order?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
+
+                                    @can('update', $order)
+                                        <a href="{{ route('orders.edit', $order) }}" class="btn btn-sm btn-warning">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    @endcan
+
+                                    @can('delete', $order)
+                                        <form action="{{ route('orders.destroy', $order) }}" method="POST"
+                                            style="display:inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Delete this order?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                             @empty
@@ -144,4 +154,3 @@
 
         </div>
     @endsection
-
